@@ -1,28 +1,43 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="container">
+    <div class="jumbotron">
+      <div class="container">
+        <h1>Welcome from Bootstrap</h1>
+        <p>This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+        <p><a class="btn btn-primary btn-lg" href="http://www.bootcss.com/" role="button" target="_blank">Learn more <span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span></a></p>
+      </div>
+    </div>
+    <div class="jumbotron">
+      <div class="container">
+        <h1>Welcome from Font Awesome</h1>
+        <p>Get vector icons and social logos on your website with Font Awesome, the web’s most popular icon set and toolkit.</p>
+        <p>
+          <i class="fa fa-camera"></i>
+          <i class="fa fa-camera fa-2x"></i>
+          <i class="fa fa-camera fa-3x"></i>
+          <i class="fa fa-camera fa-4x"></i>
+          <i class="fa fa-camera fa-5x"></i>
+          <i class="fa fa-spinner fa-spin"></i>
+        </p>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
-  name: 'app',
-  components: {
-    HelloWorld
-  }
-}
+  name: 'App'
+};
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="scss">
+// scss 变量
+$icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
+$fa-font-path: "~font-awesome/fonts/";
+
+// 表明 webpack 对 css 路径别名进行处理，此处的~别名表示 node_modules/
+@import "~bootstrap-sass/assets/stylesheets/_bootstrap";
+@import "~font-awesome/scss/font-awesome";
+
+body > .container { margin-top: 15px;}
 </style>
