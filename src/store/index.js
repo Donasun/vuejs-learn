@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import ls from '../utils/localStorage'
 import router from '../router'
 import * as moreActions from './actions'
+import * as moreGetters from './getters'
 
 Vue.use(Vuex)
 // state：共享的状态，我们不能直接更改状态
@@ -13,7 +14,9 @@ const state = {
     auth: ls.getItem('auth'),
     // 所有文章状态
     articles: ls.getItem('articles'),
-    
+    searchValue: '',
+    origin: location.origin
+
 }
 // 更改状态的方法，我们可以在这里更改状态
 const mutations = {
@@ -32,6 +35,10 @@ const mutations = {
     UPDATE_ARTICLES(state, articles) {
         state.articles = articles
         ls.setItem('articles', articles)
+    },
+    // 更新搜索值的事件类型
+    UPDATE_SEARCH_VALUE(state, searchValue) {
+        state.searchValue = searchValue
     }
 }
 
@@ -68,18 +75,22 @@ const actions = {
 
 const getters = {
     // 第一参数是 state，因为要传 id，所以这里返回一个函数
-  getArticleById: (state) => (id) => {
-       // 从仓库获取所有文章
-    let articles = state.articles
-// 所有文章是一个数组时
-    if (Array.isArray(articles)) {
-         // 传进来的 id 和文章的 articleId 相同时，返回这些文章
-      articles = articles.filter(article => parseInt(id) === parseInt(article.articleId))
-      return articles.length ? articles[0] : null
-    } else {
-      return null
-    }
-  }
+    getArticleById: (state) => (id) => {
+        // 从仓库获取所有文章
+        // let articles = state.articles
+        // 使用派生状态 computedArticles 作为所有文章
+        let articles = getters.computedArticles
+        // 所有文章是一个数组时
+        if (Array.isArray(articles)) {
+            // 传进来的 id 和文章的 articleId 相同时，返回这些文章
+            articles = articles.filter(article => parseInt(id) === parseInt(article.articleId))
+            return articles.length ? articles[0] : null
+        } else {
+            return null
+        }
+    },
+    // 混入 moreGetters, 你可以理解为 getters = Object.assign(getters, moreGetters)
+    ...moreGetters
 }
 
 const store = new Vuex.Store({
