@@ -8,7 +8,7 @@ function showTitle(el, title) {
     } else {
         // 返回具有四个属性left、top、right、bottom的DOMRect对象
         const elRect = el.getBoundingClientRect()
-        
+
         // getComputedStyle(element, [pseudoElt])
         const elComputedStyle = window.getComputedStyle(el, null)
         const rightOffset = parseInt(elComputedStyle.getPropertyValue('padding-right')) || 0
@@ -17,6 +17,10 @@ function showTitle(el, title) {
         popoverStyle.visibility = 'hidden'
         popoverStyle.display = 'block'
         popover.querySelector('.popover-content').textContent = title
+        // offsetHeight 元素自身可视高度加上上下border的高度
+        // offsetWidth 元素自身可视宽度加上左右border的宽度
+        // offsetTop 元素自身border顶部距离父元素顶部或者body元素border顶部的距离
+        // offsetLeft 元素自身border左边距离父元素border左边或者body元素border左边的距离
         popoverStyle.left = elRect.left - popover.offsetWidth / 2 + (el.offsetWidth - rightOffset) / 2 + 'px'
         popoverStyle.top = elRect.top - popover.offsetHeight + topOffset + 'px'
         popoverStyle.display = 'block'
