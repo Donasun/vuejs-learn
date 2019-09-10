@@ -1,0 +1,48 @@
+import Vue from 'vue'
+import Vuex from 'vuex'
+import ls from '../utils/localStorage'
+import router from '../router'
+
+Vue.use(Vuex)
+// state：共享的状态，我们不能直接更改状态
+const state = {
+    // 用户信息，初始值从本地 localStorage 获取
+    user: ls.getItem('user'),
+    // 添加 auth 来保存当前用户的登录状态
+    auth: ls.getItem('auth')
+}
+// 更改状态的方法，我们可以在这里更改状态
+const mutations = {
+    UPDATE_USER(state, user) {
+        // 改变 user 的值
+        state.user = user
+        // 将改变后的值存入 localStorage
+        ls.setItem('user', user)
+    },
+    // 添加 UPDATE_AUTH 来更改当前用户的登录状态
+    UPDATE_AUTH(state, auth) {
+        state.auth = auth
+        ls.setItem('auth', auth)
+    }
+}
+
+const actions = {
+    login({ commit }, user) {
+        // 登录时有传用户信息，就更新下用户信息
+        if (user) commit('UPDATE_USER', user)
+
+        // 更新当前用户的登录状态为已登录
+        commit('UPDATE_AUTH', true)
+        // 跳转到首页
+        // push 是路由的一个方法，用来跳转到一个新的地址，第一个参数是字符串或者一个描述地址对象
+        router.push('/')
+    }
+}
+
+const store = new Vuex.Store({
+    state,
+    mutations,
+    actions
+})
+
+export default store

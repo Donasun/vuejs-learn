@@ -1,6 +1,10 @@
 <template>
   <div id="wrap">
     <TheHeader/>
+    <div id="main-container" class="container main-container">
+      <!-- 渲染路径匹配到的视图组件 -->
+      <router-view/>
+    </div>
     <TheFooter/>
   </div>
 </template>
