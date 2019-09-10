@@ -60,4 +60,19 @@ export default [{
         component: () => import('@/views/articles/Create'),
         meta: { auth: true }
     },
+    {
+        path: '/:user',
+        component: () => import('@/views/articles/Column'),
+        children: [{
+                path: '',
+                name: 'Column',
+                component: () => import('@/views/articles/List')
+            },
+            {
+                path: '/articles/:articleId/content',
+                name: 'Content',
+                component: () => import('@/views/articles/Content')
+            }
+        ]
+    },
 ]
