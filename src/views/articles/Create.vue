@@ -62,7 +62,7 @@ export default {
       autoDownloadFontAwesome: false,
       autosave: {
         enabled: true,
-        uniqueId: 'vuejs-essential'
+        uniqueId: 'vuejs-learn'
       },
       renderingConfig: {
         codeSyntaxHighlighting: true
