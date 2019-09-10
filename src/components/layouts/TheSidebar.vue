@@ -55,7 +55,7 @@
                     <ul class="list list-group">
                         <li v-for="(item, index) in resources" class="list-group-item" :key="index">
                             <a :href="item.link" target="_blank">
-                                <img class="media-object inline-block" src="https://vuejscaffcdn.phphub.org/uploads/sites/fcxJFYjEMaLQt4Oi1x6ZNkcqvwIVHbfy.png" />
+                                <img class="media-object inline-block" src="https://cdn.learnku.com//uploads/communities/WtC3cPLHzMbKRSZnagU9.png" />
                                 {{ item.title }}
                             </a>
                         </li>

@@ -1,5 +1,5 @@
 import router from '../router'
-// 导出一个 post 事件，这里的用户参数是 { article, articleId }，article 包含文章标题和内容，articleId 是文章 ID 
+
 export const post = ({ commit, state }, { article, articleId }) => {
   let articles = state.articles
 
@@ -99,6 +99,7 @@ export const like = ({ commit, state }, { articleId, isAdd }) => {
   return likeUsers
 }
 
+// 参数 articleId 是文章 ID；comment 是评论内容；commentId 是评论 ID
 export const comment = ({ commit, state }, { articleId, comment, commentId }) => {
   let articles = state.articles
   let comments = []

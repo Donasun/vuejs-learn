@@ -60,7 +60,6 @@ export const computedArticles = (state) => {
   return newArticles
 }
 
-
 // 返回指定 uid 下的所有文章，参数 uid 是用户 ID，user 是用户名
 export const getArticlesByUid = (state, getters) => (uid, user) => {
   // 使用派生状态 computedArticles 作为所有文章
@@ -86,7 +85,6 @@ export const getArticlesByUid = (state, getters) => (uid, user) => {
 
   return articles
 }
-
 
 // 返回使用 filter 参数过滤后的所有文章
 export const getArticlesByFilter = (state, getters) => (filter) => {
@@ -153,46 +151,41 @@ export const getArticlesByFilter = (state, getters) => (filter) => {
   return filteredArticles
 }
 
-
-// 根据关键字 keyword 返回搜索结果
+// 添加 filter 参数，以按指定方式排序
 export const getArticlesByKeyword = (state, getters) => (keyword, filter) => {
-    let articles = getters.computedArticles
-    let results = []
+  let articles = getters.computedArticles
+  let results = []
 
-    if (Array.isArray(articles)) {
-        articles.forEach((article) => {
-            let { articleId, title, content } = article
-            const regex = new RegExp(`(${keyword})`, 'gi')
+  if (Array.isArray(articles)) {
+    articles.forEach((article) => {
+      let { articleId, title, content } = article
+      const regex = new RegExp(`(${keyword})`, 'gi')
 
-            if (title.indexOf(keyword) !== -1 || content.indexOf(keyword) !== -1) {
-                // 自定义文章详情路径
-                const url = `${state.origin}/articles/${articleId}/content`
-                // 反向引用正则内容字符串
-                title = title.replace(regex, '<span class="highlight">$1</span>')
-                // 给文章内容中的关键字加上高亮，只取内容前 100 个字
-                content = content.substr(0, 100).replace(regex, '<span class="highlight">$1</span>')
-                // 文章结果数据合并
-                results.push({ ...article, ...{ url, title, content } })
-            }
-        })
-    }
+      if (title.indexOf(keyword) !== -1 || content.indexOf(keyword) !== -1) {
+        const url = `${state.origin}/articles/${articleId}/content`
+        title = title.replace(regex, '<span class="highlight">$1</span>')
+        content = content.substr(0, 100).replace(regex, '<span class="highlight">$1</span>')
+        results.push({...article, ...{ url, title, content }})
+      }
+    })
+  }
 
-    // 评估排序方式
-    switch (filter) {
-        case 'vote':
-            // 将赞的最多的文章排在前面
-            results.sort((a, b) => {
-                const alikeUsers = Array.isArray(a.likeUsers) ? a.likeUsers : []
-                const blikeUsers = Array.isArray(b.likeUsers) ? b.likeUsers : []
-                return blikeUsers.length - alikeUsers.length
-            })
-            break
-        default:
-            // 将标题中含有关键字的最先出现的文章排在前面
-            results.sort((a, b) => {
-                a.title.indexOf(keyword) > b.title.indexOf(keyword)
-            })
-    }
+  // 评估排序方式
+  switch (filter) {
+    case 'vote':
+      // 将赞的最多的文章排在前面
+      results.sort((a, b) => {
+        const alikeUsers = Array.isArray(a.likeUsers) ? a.likeUsers : []
+        const blikeUsers = Array.isArray(b.likeUsers) ? b.likeUsers : []
 
-    return results
+        return blikeUsers.length - alikeUsers.length
+      })
+
+      break
+    default:
+      // 默认将标题中含有关键字的文章排在前面
+      results.sort((a, b) => a.title.indexOf(keyword) < b.title.indexOf(keyword))
+  }
+
+  return results
 }
