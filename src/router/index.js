@@ -1,29 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import routes from './routes'
 
 Vue.use(Router)
-
-const routes = [{
-        // path：路由的路径
-        path: '/auth/register',
-        // name：路由的名称
-        name: 'Register',
-        // component：对应的视图组件
-        // 路由懒加载，即当路由被访问时才加载对应的组件
-        component: () => import('@/views/auth/Register')
-    }, // 首页路由配置
-    {
-        path: '/',
-        name: 'Home',
-        component: () => import('@/views/Home')
-    },
-    // 其他未配置的路由都跳转到首页
-    {
-        path: '*',
-        // 重定向
-        redirect: '/'
-    }
-]
 
 const router = new Router({
     // mode：路由模式，默认值 'hash' 使用井号（ # ）作路由，

@@ -36,6 +36,10 @@ const actions = {
         // 跳转到首页
         // push 是路由的一个方法，用来跳转到一个新的地址，第一个参数是字符串或者一个描述地址对象
         router.push('/')
+    },
+    logout({ commit }) {
+        commit('UPDATE_AUTH', false)
+        router.push({ name: 'Home', params: { logout: true } })
     }
 }
 
