@@ -12,23 +12,47 @@ const router = new Router({
     linkExactActiveClass: 'active',
     routes
 })
-// 全局前置守卫
+// 全局前置守卫路由
 router.beforeEach((to, from, next) => {
-    // 获取仓库里的登录信息
-    // 使用 router.app 可以获取 router 对应的 Vue 根实例
-    // 使用实例的 $options.store 可以从选项中访问仓库
+    // 应用根实例
     const app = router.app
+    // 从根实例的配置器内取值
     const store = app.$options.store
+    // 权限认证
     const auth = store.state.auth
+    // 获取目标页面路由参数里的 articleId
+    // const articleId = to.params.articleId
+    // 当前用户
+    const user = store.state.user && store.state.user.name
+    // 路由参数中的用户
+    const paramUser = to.params.user
 
     app.$message.hide()
 
-    if ((auth && to.path.indexOf('/auth/') !== -1) ||
-        (!auth && to.meta.auth)) {
-        // 如果当前用户已登录，且目标路由包含 /auth/ ，就跳转到首页
+    if (
+        (auth && to.path.indexOf('/auth/') !== -1) ||
+        (!auth && to.meta.auth) ||
+        // 路由参数中的用户不为当前用户，且找不到与其对应的文章时，跳转到首页
+        (paramUser && paramUser!==user && !store.getters.getArticlesByUid(null,paramUser).length)
+    ) {
         next('/')
     } else {
         next()
     }
 })
+
+// 注册全局后置钩子,显示路由消息参数
+router.afterEach((to) => {
+    const app = router.app
+    const showMsg = to.params.showMsg
+
+    if (showMsg) {
+        if (typeof showMsg === 'string') {
+            app.$message.show(showMsg)
+        } else {
+            app.$message.show('操作成功')
+        }
+    }
+})
+       
 export default router
